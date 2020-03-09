@@ -68,7 +68,7 @@ public class PostService {
 		do {
 			do {
 				gameIndex = getRandomNumberInRange(0, gamesList.size() - 1);
-
+				
 				JSONObject json = jsonService.readJsonFromUrl(
 						"https://store.steampowered.com/appreviews/" + gamesList.get(gameIndex) + "?json=1");
 				Gson gson = new Gson();
@@ -79,6 +79,7 @@ public class PostService {
 			} else {
 				reviewIndex = getRandomNumberInRange(0, page.getReviews().size() - 1);
 			}
+			
 			review = page.getReviews().get(reviewIndex);
 			postList = repo.getReviews(Integer.parseInt(gamesList.get(gameIndex)));
 		} while (review.getReview().length() > 250 || review.getReview().length() < 1
@@ -105,7 +106,11 @@ public class PostService {
 
 		fbService.newFacebookPost(imgService.getInputStream(imgService.genNewReviewImage(newPost), "jpg"), postComment);
 		repo.save(new Post(null, review.getReview(), Integer.parseInt(gamesList.get(gameIndex))));
-
+		
+//		System.out.println("GAME INDEX: " + gameIndex);
+//		System.out.println("REVIEW INDEX: " + reviewIndex);
+//		System.out.println("REVIEW: " + review.getReview());
+			
 	}
 
 	private static int getRandomNumberInRange(int min, int max) {
@@ -132,7 +137,7 @@ public class PostService {
 
 	private static boolean hasDuplicates(List<Post> list, String review) {
 		for (Post post : list) {
-			if (post.getReviewBody() == review)
+			if (post.getReviewBody().equals(review))
 				return true;
 		}
 		return false;
