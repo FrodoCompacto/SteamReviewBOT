@@ -18,6 +18,7 @@ public class Post implements Serializable {
 	
 	private String reviewBody;
 	private Integer appId;
+	private String postId;
 	
 	
 	public Post() {
@@ -25,11 +26,12 @@ public class Post implements Serializable {
 	}
 
 
-	public Post(Integer id, String reviewBody, Integer appId) {
+	public Post(Integer id, String reviewBody, Integer appId, String postId) {
 		super();
 		this.id = id;
 		this.reviewBody = reviewBody;
 		this.appId = appId;
+		this.postId = postId;
 	}
 
 
@@ -60,6 +62,16 @@ public class Post implements Serializable {
 
 	public void setAppId(Integer appId) {
 		this.appId = appId;
+	}
+
+
+	public String getPostId() {
+		return postId;
+	}
+
+
+	public void setPostId(String postId) {
+		this.postId = postId;
 	}
 
 

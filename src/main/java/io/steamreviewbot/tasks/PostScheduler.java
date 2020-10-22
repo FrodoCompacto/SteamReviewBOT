@@ -19,7 +19,7 @@ public class PostScheduler {
 	private PostService postService;
 	
 
-	@Scheduled(fixedDelay = 1800000)
+	@Scheduled(fixedDelay = 5400000)
 	 public void scheduledEvent() throws JSONException, IOException { 
 		postService.generateNewPost();
     }
