@@ -43,7 +43,7 @@ public class AppResource {
 	    if(!isValidCaptcha){
 	        throw new ForbiddenException("Captcha is not valid");
 	    } else {
-	    	if (appList.getAppids().size() > 0) {
+	    	if (appList.getAppids().size() > 0 && appList.getAppids().size() <= 10) {
 	    	appList.getAppids().forEach(app -> {
 	    		System.out.println(app.getAppid());
 	    		if(!gameValidator.validateGame(app.getAppid())) {
