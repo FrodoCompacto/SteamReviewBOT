@@ -1,5 +1,6 @@
 package io.steamreviewbot.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,10 @@ import org.springframework.stereotype.Service;
 import io.steamreviewbot.domain.App;
 import io.steamreviewbot.dto.AppDTO;
 import io.steamreviewbot.repositories.AppRepository;
+import io.steamreviewbot.services.exceptions.ForbiddenException;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 @Service
 public class AppService {
@@ -20,7 +25,7 @@ public class AppService {
 	@Autowired
 	private AppRepository repo;
 	
-	
+	OkHttpClient client = new OkHttpClient();
 	
 	public void insert(ArrayList<AppDTO> listApp) {
 		
@@ -44,6 +49,34 @@ public class AppService {
 
 	public List<App> findAll() {
 		return repo.findAll();
+	}
+	
+	public String fetchSteamGamesList() {
+		Request request = new Request.Builder()
+			      .url("https://api.steampowered.com/ISteamApps/GetAppList/v0002/")
+			      .build();
+
+		try {
+			Response response = client.newCall(request).execute();
+			return response.body().string();
+		} catch (IOException e) {
+			throw new ForbiddenException("Fail to fetch steam game list");
+		}	
+	}
+	
+	public String fetchSteamGame(int num) {
+		Request request = new Request.Builder()
+			      .url("https://store.steampowered.com/api/appdetails?appids=" + num)
+			      .build();
+
+		try {
+			Response response = client.newCall(request).execute();
+			return response.body().string();
+		} catch (IOException e) {
+			throw new ForbiddenException("Fail to fetch steam game");
+		}
+		
+		
 	}
 
 }

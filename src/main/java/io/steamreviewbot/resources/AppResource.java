@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -79,5 +80,23 @@ public class AppResource {
 		return ResponseEntity.ok().body(listApp);
 	}
 	
+	@RequestMapping(value="/fetch/steamgamelist", method = RequestMethod.GET)
+	public ResponseEntity<String> fetchSteamGamesList() {
+		String response;
+		
+		response = service.fetchSteamGamesList();
+		
+		return ResponseEntity.ok().body(response);
+	}
+	
+	@RequestMapping(value="/fetch/steamgame/{id}", method = RequestMethod.GET)
+	public ResponseEntity<String> fetchSteamGame(@PathVariable Integer id) {
+		String response;
+		
+		if (id < 0 ) throw new ForbiddenException("Invalid game id");
+		response = service.fetchSteamGame(id);
+		
+		return ResponseEntity.ok().body(response);
+	}
 
 }

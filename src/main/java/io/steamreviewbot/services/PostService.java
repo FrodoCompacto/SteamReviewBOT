@@ -120,8 +120,8 @@ public class PostService {
         String postComment = "Game reviewed:\n" + "https://store.steampowered.com/app/" + appId
                 + "/";
 
-        postId = fbService.newFacebookPost(imgService.getInputStream(imgService.genNewReviewImage(newPost), "jpg"), postComment);
-        postRepo.save(new Post(null, review.getReview(), appId, postId));
+//        postId = fbService.newFacebookPost(imgService.getInputStream(imgService.genNewReviewImage(newPost), "jpg"), postComment);
+//        postRepo.save(new Post(null, review.getReview(), appId, postId));
         
 //		System.out.println("GAME ID: " + appId);
 //		System.out.println("REVIEW INDEX: " + reviewIndex);
