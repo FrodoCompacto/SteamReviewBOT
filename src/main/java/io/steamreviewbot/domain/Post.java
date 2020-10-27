@@ -1,11 +1,14 @@
 package io.steamreviewbot.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 @Entity
@@ -20,9 +23,13 @@ public class Post implements Serializable {
 	private Integer appId;
 	private String postId;
 	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
+	private Date postDate;
+	
 	
 	public Post() {
 		super();
+		this.postDate = new Date();
 	}
 
 
@@ -32,6 +39,7 @@ public class Post implements Serializable {
 		this.reviewBody = reviewBody;
 		this.appId = appId;
 		this.postId = postId;
+		this.postDate = new Date();
 	}
 
 
@@ -72,6 +80,15 @@ public class Post implements Serializable {
 
 	public void setPostId(String postId) {
 		this.postId = postId;
+	}
+
+	public Date getPostDate() {
+		return postDate;
+	}
+
+
+	public void setPostDate(Date postDate) {
+		this.postDate = postDate;
 	}
 
 

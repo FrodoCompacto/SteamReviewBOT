@@ -49,7 +49,7 @@ public class GameValidator {
 				if (index == -1) throw new ForbiddenException("Invalid game list(Irrecognizable Json)");
 				index = index + 9;
 				
-				System.out.println(str.substring(index, index+4));
+				
 				return str.substring(index, index+4).equalsIgnoreCase("true");
 				
 			    

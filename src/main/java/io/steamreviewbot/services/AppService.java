@@ -78,5 +78,29 @@ public class AppService {
 		
 		
 	}
+	
+//	public AppDTO getSteamGame(int num) {
+//		Request request = new Request.Builder()
+//			      .url("https://store.steampowered.com/api/appdetails?appids=" + num)
+//			      .build();
+//
+//		try {
+//			Response response = client.newCall(request).execute();
+//			String str = response.body().string();
+//			
+//			int index = str.indexOf("success");
+//			if (index == -1) throw new ForbiddenException("Invalid game list(Irrecognizable Json)");
+//			index = index + 9;
+//			
+//			if (str.substring(index, index+4).equalsIgnoreCase("true")) {
+//				
+//			}
+//			
+//		} catch (IOException e) {
+//			throw new ForbiddenException("Fail to fetch steam game");
+//		}
+//		
+//		
+//	}
 
 }

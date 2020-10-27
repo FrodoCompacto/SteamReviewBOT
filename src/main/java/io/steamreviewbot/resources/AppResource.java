@@ -98,5 +98,15 @@ public class AppResource {
 		
 		return ResponseEntity.ok().body(response);
 	}
+	
+//	@RequestMapping(value="/get/steamgame/{id}", method = RequestMethod.GET)
+//	public ResponseEntity<AppDTO> getSteamGame(@PathVariable Integer id) {
+//		AppDTO response;
+//		
+//
+//		response = service.getSteamGame(id);
+//		
+//		return ResponseEntity.ok().body(response);
+//	}
 
 }
