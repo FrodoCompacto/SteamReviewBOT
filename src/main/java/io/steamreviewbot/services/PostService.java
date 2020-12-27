@@ -22,6 +22,8 @@ import io.steamreviewbot.domain.PostInformations;
 import io.steamreviewbot.domain.Review;
 import io.steamreviewbot.domain.ReviewsPage;
 import io.steamreviewbot.domain.user.User;
+import io.steamreviewbot.dto.AppPostStats;
+import io.steamreviewbot.dto.AppStats;
 import io.steamreviewbot.repositories.AppRepository;
 import io.steamreviewbot.repositories.PostRepository;
 
@@ -136,4 +138,19 @@ public class PostService {
         Gson gson = new Gson();
         return gson.fromJson(json.toString(), User.class);
     }
+
+	public AppPostStats findTopPosts(int limit) {
+		
+		AppPostStats stats = new AppPostStats();
+	
+		stats.setListFromInterface(postRepo.getTopPosted().subList(0, limit));
+		stats.setTotalItens((int)postRepo.count());
+		
+		return stats;
+	}
+	
+	public AppStats findAppInfo(int id) {
+		
+		return new AppStats(postRepo.getPostedTimes(id));
+	}
 }
