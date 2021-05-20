@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import io.steamreviewbot.services.PostService;
 
 import java.io.IOException;
+import java.util.Random;
 
 import org.json.JSONException;
 
@@ -20,8 +21,19 @@ public class PostScheduler {
 	
 
 	@Scheduled(fixedDelay = 5400000)
-	 public void scheduledEvent() throws JSONException, IOException { 
-		postService.generateNewPost();
+	 public void scheduledEvent() throws JSONException, IOException {
+		if (getRandomNumberInRange(1,500) < 35){
+			postService.generateNewDualityPost();
+		} else postService.generateNewPost();
     }
-	
+
+	private static int getRandomNumberInRange(int min, int max) {
+
+		if (min >= max) {
+			throw new IllegalArgumentException("Max must be greater than min.");
+		}
+
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
+	}
 }

@@ -41,6 +41,14 @@ public class PageStatistics implements Serializable {
 		super();
 		this.post_ids = new ArrayList<>();
 		this.postDate = new Date();
+
+		this.likes = 0;
+		this.loves = 0;
+		this.cares = 0;
+		this.hahas = 0;
+		this.wows = 0;
+		this.sads = 0;
+		this.grrs = 0;
 	}
 
 	public PageStatistics(Integer id, Integer likes, Integer loves, Integer cares, Integer hahas,

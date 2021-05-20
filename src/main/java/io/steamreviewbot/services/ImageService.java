@@ -1,25 +1,21 @@
 package io.steamreviewbot.services;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.AttributedString;
 import java.time.Month;
+import java.util.List;
 
 import javax.annotation.processing.FilerException;
 import javax.imageio.ImageIO;
 
+import io.steamreviewbot.domain.ReactionOrder;
 import org.springframework.stereotype.Service;
 
 import io.steamreviewbot.domain.PostInformations;
@@ -142,5 +138,111 @@ public class ImageService {
 			throw new FilerException("Failed to read file.");
 		}
 	}
-	
+
+    public BufferedImage genNewDualityImage(PostInformations review_pos, PostInformations review_neg) throws IOException {
+
+		BufferedImage newImage = new BufferedImage(637,400, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2 = newImage.createGraphics();
+		g2.setPaint(Color.CYAN);
+		g2.fillRect(0, 0, 637,400);
+
+
+		BufferedImage img1 = genNewReviewImage(review_pos);
+		BufferedImage img2 = genNewReviewImage(review_neg);
+
+		g2.drawImage(img1, null, 0, 0);
+		g2.drawImage(img2, null, 0,200);
+
+		g2.dispose();
+
+		return newImage;
+    }
+
+	public static BufferedImage resize(BufferedImage img, double ratio) {
+		int newW = (int)(img.getWidth() * ratio);
+		int newH = (int)(img.getHeight() * ratio);
+
+		Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+		BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+		Graphics2D g2d = dimg.createGraphics();
+		g2d.drawImage(tmp, 0, 0, null);
+		g2d.dispose();
+
+		return dimg;
+	}
+
+	public static void copyInputStreamToFile(InputStream inputStream, String path)
+			throws IOException {
+
+		File file = new File(path);
+
+		// append = false
+		try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+			int read;
+			byte[] bytes = new byte[8192];
+			while ((read = inputStream.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+		}
+
+		System.out.println("Saved: " + path);
+	}
+
+	public BufferedImage genStatisticsImage(List<ReactionOrder> list) throws IOException {
+		BufferedImage newImage = new BufferedImage(500,628, BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2 = newImage.createGraphics();
+		g2.setPaint(Color.CYAN);
+		g2.fillRect(0, 0, 500,628);
+
+		int x = 153;
+		int y = 10;
+
+		g2.drawImage(ImageIO.read(new URL("https://forbidden-bot.s3-sa-east-1.amazonaws.com/reactions/bg.png")), null, 0,0);
+		g2.drawImage(generateText("Most used reactions", newImage, "Arial", Color.decode("#c1dbf4"), 20, Font.BOLD), null, x, y);
+		y += 45;
+		x += 63;
+
+		for (int i = 0; i < list.size(); i++) {
+			int auxX = 0;
+			int auxY = 0;
+
+			int auxEmojiX = 0;
+
+			if (list.get(i).count >= 10000) auxX = -14;
+			else if (list.get(i).count >= 1000) auxX = -10;
+			else if (list.get(i).count >= 100) auxX = -7;
+			else if (list.get(i).count < 10) auxX = 3;
+
+			double ratio = 0.3;
+			if (i == 4){
+				ratio = 0.25;
+				auxEmojiX = 5;
+			}
+			else if	(i == 5){
+				ratio = 0.20;
+				auxY = -10;
+				auxEmojiX = 11;
+			}
+			else if	(i == 6){
+				ratio = 0.15;
+				auxY = -33;
+				auxEmojiX = 16;
+			}
+
+			g2.drawImage(generateText(list.get(i).count + "x", newImage, "Arial", Color.decode("#FFFFFF"), 17, Font.PLAIN), null, auxX + 20 + x, auxY + y);
+			y += 20;
+			g2.drawImage(resize(ImageIO.read(new URL(list.get(i).url)), ratio), null, auxEmojiX + x,auxY + y);
+			y += 70;
+		}
+
+
+		g2.dispose();
+		return newImage;
+	}
+
+	public InputStream inputStreamFromUrl(String url) throws IOException {
+
+		return getInputStream(ImageIO.read(new URL(url)), "jpg");
+	}
 }
