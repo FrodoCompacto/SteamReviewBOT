@@ -11,7 +11,7 @@ import io.steamreviewbot.domain.App;
 @Repository
 public interface AppRepository extends JpaRepository<App, Integer> {
 	
-	@Query(value="SELECT * FROM App ORDER BY RAND() LIMIT 1", nativeQuery = true)
+	@Query(value="SELECT * FROM app ORDER BY RAND() LIMIT 1", nativeQuery = true)
 	App getRandomApp();
 	
 }

@@ -23,7 +23,7 @@ public class PageStatisticsResource {
     public String pulse(@PathVariable String date) throws IOException {
 
         try {
-            Date data = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+            Date data = new SimpleDateFormat("dd-MM-yyyy").parse(date);
             service.generateStatsPost(data);
         } catch(ParseException ex){
             return "data com formato errado, esperado: dd/MM/yyyy";

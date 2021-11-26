@@ -3,6 +3,10 @@ package io.steamreviewbot.services;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -131,12 +135,14 @@ public class PostService {
                 + "/";
 
         InputStream img = imgService.getInputStream(imgService.genNewReviewImage(newPost), "jpg");
+        Path tempFile = Files.createTempFile("aux", ".jpg"); // prefixo e sufixo podem ser null (tanto faz, o arquivo é temporário e o Java cria um nome "único" mesmo...)
+        Files.copy(img, tempFile, StandardCopyOption.REPLACE_EXISTING);
 
-        postId = fbService.newFacebookPost(img, postComment);
-        long tweetId = ttService.newTweet(img, "", postComment);
+        postId = fbService.newFacebookPost(Files.newInputStream(tempFile, StandardOpenOption.READ), postComment);
+        long tweetId = ttService.newTweet(Files.newInputStream(tempFile, StandardOpenOption.READ), "", postComment);
         postRepo.save(new Post(null, review.getReview(), appId, postId, tweetId));
 
-
+        Files.delete(tempFile);
 
         //imgService.copyInputStreamToFile(imgService.getInputStream(imgService.genNewReviewImage(newPost), "jpg"), "c:\\test\\test.jpg");
 
@@ -240,11 +246,15 @@ public class PostService {
         String desc = "The duality of man....";
 
         InputStream img = imgService.getInputStream(imgService.genNewDualityImage(Post1, Post2), "jpg");
+        Path tempFile = Files.createTempFile("aux", ".jpg"); // prefixo e sufixo podem ser null (tanto faz, o arquivo é temporário e o Java cria um nome "único" mesmo...)
+        Files.copy(img, tempFile, StandardCopyOption.REPLACE_EXISTING);
 
-        postId = fbService.newFacebookPostWDesc(img, postComment, desc);
-        long tweetId = ttService.newTweet(img, desc, postComment);
+        postId = fbService.newFacebookPostWDesc(Files.newInputStream(tempFile, StandardOpenOption.READ), postComment, desc);
+        long tweetId = ttService.newTweet(Files.newInputStream(tempFile, StandardOpenOption.READ), desc, postComment);
         postRepo.save(new Post(null, review_positive.getReview(), appId, "DUALITY_1_" + postId, tweetId));
         postRepo.save(new Post(null, review_negative.getReview(), appId, "DUALITY_2_" + postId, tweetId));
+
+        Files.delete(tempFile);
 
         //imgService.copyInputStreamToFile(imgService.getInputStream(imgService.genNewDualityImage(Post1, Post2), "jpg"), "c:\\test\\test.jpg");
     }
