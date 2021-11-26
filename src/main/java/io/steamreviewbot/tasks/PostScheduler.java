@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import org.json.JSONException;
+import twitter4j.TwitterException;
 
 @Component
 @EnableScheduling
@@ -21,7 +22,7 @@ public class PostScheduler {
 	
 
 	@Scheduled(fixedDelay = 5400000)
-	 public void scheduledEvent() throws JSONException, IOException {
+	 public void scheduledEvent() throws JSONException, IOException, TwitterException {
 		if (getRandomNumberInRange(1,500) < 35){
 			postService.generateNewDualityPost();
 		} else postService.generateNewPost();
