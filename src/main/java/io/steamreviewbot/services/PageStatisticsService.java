@@ -32,11 +32,9 @@ public class PageStatisticsService {
 	private ImageService imgService;
 
 
-	public void generateStatsPost() throws IOException {
+	public void generateStatsPost(Date data) throws IOException {
 
-		Date dateAux = repo.getLastStatsPage().getPostDate();
-
-		List<Post> allPosts = postService.getPostsAfterDate(dateAux);
+		List<Post> allPosts = postService.getPostsAfterDate(data);
 
 
 		PageStatistics stats = new PageStatistics();
@@ -103,7 +101,7 @@ public class PageStatisticsService {
 		stats.setPost_ids(postListAuxId.subList(0, 10));
 		List<Post> postListFinal = postListAux.subList(0, 10);
 
-		LocalDate date = dateAux.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate date = data.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 		LocalDate now = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
 		String albumTitle = "Stats from " + now.format(

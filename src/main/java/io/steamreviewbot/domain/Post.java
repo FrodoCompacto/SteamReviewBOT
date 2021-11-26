@@ -22,7 +22,8 @@ public class Post implements Serializable {
 	private String reviewBody;
 	private Integer appId;
 	private String postId;
-	
+	private long twitterId;
+
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
 	private Date postDate;
 	
@@ -33,12 +34,13 @@ public class Post implements Serializable {
 	}
 
 
-	public Post(Integer id, String reviewBody, Integer appId, String postId) {
+	public Post(Integer id, String reviewBody, Integer appId, String postId, long twitterId) {
 		super();
 		this.id = id;
 		this.reviewBody = reviewBody;
 		this.appId = appId;
 		this.postId = postId;
+		this.twitterId = twitterId;
 		this.postDate = new Date();
 	}
 
@@ -80,6 +82,14 @@ public class Post implements Serializable {
 
 	public void setPostId(String postId) {
 		this.postId = postId;
+	}
+
+	public long getTwitterId() {
+		return twitterId;
+	}
+
+	public void setTwitterId(long twitterId) {
+		this.twitterId = twitterId;
 	}
 
 	public Date getPostDate() {
