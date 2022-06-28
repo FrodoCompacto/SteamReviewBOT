@@ -1,4 +1,6 @@
-# https://www.facebook.com/reviewpostbot
-# https://twitter.com/steamreviewbot
 
-# https://reviewpostbot.web.app/
+# Social
+ - [Facebook Page](https://www.facebook.com/reviewpostbot)
+ - [Twitter](https://twitter.com/steamreviewbot)
+# Upload
+ - https://reviewpostbot.web.app/
